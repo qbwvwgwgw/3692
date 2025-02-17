@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>369 게임</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            flex-direction: column;
+        }
+        #game-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        #number-display {
+            font-size: 48px;
+            margin: 20px 0;
+            color: #333;
+        }
+        #result-display {
+            font-size: 36px;
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <h1>369 게임</h1>
+        <div id="number-display">0</div>
+        <div id="result-display"></div>
+        <button onclick="startGame()">게임 시작</button>
+        <button onclick="checkAnswer()">짝!</button>
+    </div>
+
+    <script>
+        let currentNumber = 0;
+        let isGameRunning = false;
+
+        function startGame() {
+            currentNumber = 1;
+            isGameRunning = true;
+            document.getElementById('number-display').textContent = currentNumber;
+            document.getElementById('result-display').textContent = '';
+        }
+
+        function checkAnswer() {
+            if (!isGameRunning) {
+                alert('먼저 게임을 시작해주세요!');
+                return;
+            }
+
+            let result = is369Number(currentNumber);
+            let userInput = result ? '짝' : currentNumber;
+            
+            let resultDisplay = document.getElementById('result-display');
+            
+            if ((result && resultDisplay.textContent === '짝') || 
+                (!result && resultDisplay.textContent === '')) {
+                currentNumber++;
+                document.getElementById('number-display').textContent = currentNumber;
+                resultDisplay.textContent = '';
+            } else {
+                alert('게임 오버! 잘못된 입력입니다.');
+                isGameRunning = false;
+            }
+
+            // 게임 종료 조건 (예: 30까지)
+            if (currentNumber > 30) {
+                alert('축하합니다! 게임 클리어!');
+                isGameRunning = false;
+            }
+        }
+
+        function is369Number(number) {
+            // 3, 6, 9가 포함된 숫자인지 확인
+            return String(number)
+                .split('')
+                .some(digit => ['3', '6', '9'].includes(digit));
+        }
+    </script>
+</body>
+</html>
+
